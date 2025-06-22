@@ -120,10 +120,6 @@
             navigationController.transitioningDelegate = cropViewController.transitioningDelegate;
             [topController presentViewController:navigationController animated:YES completion:nil];
         } else {
-            cropViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-            if (@available(iOS 13.0, *)) {
-                cropViewController.modalInPresentation = YES;
-            }
             [topController presentViewController:cropViewController animated:YES completion:nil];
         }
   } else {
