@@ -146,6 +146,8 @@
     NSString *title = options[@"ios.title"];
     NSString *doneButtonTitle = options[@"ios.done_button_title"];
     NSString *cancelButtonTitle = options[@"ios.cancel_button_title"];
+    NSString *doneButtonColor = options[@"ios.done_button_color"];
+    NSString *cancelButtonColor = options[@"ios.cancel_button_color"];
 
     if (minimumAspectRatio && [minimumAspectRatio isKindOfClass:[NSNumber class]]) {
         controller.minimumAspectRatio = minimumAspectRatio.floatValue;
@@ -195,6 +197,36 @@
     if (cancelButtonTitle && [cancelButtonTitle isKindOfClass:[NSString class]]) {
         controller.cancelButtonTitle = cancelButtonTitle;
     }
+    if (doneButtonColor && [doneButtonColor isKindOfClass:[NSString class]]) {
+        controller.doneButtonColor = [self colorFromHexString:doneButtonColor];
+    }
+    if (cancelButtonColor && [cancelButtonColor isKindOfClass:[NSString class]]) {
+        controller.cancelButtonColor = [self colorFromHexString:cancelButtonColor];
+    }
+}
+
+- (UIColor *)colorFromHexString:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    if (cleanString.length == 3) {
+        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
+            [cleanString substringWithRange:NSMakeRange(0,1)],
+            [cleanString substringWithRange:NSMakeRange(0,1)],
+            [cleanString substringWithRange:NSMakeRange(1,1)],
+            [cleanString substringWithRange:NSMakeRange(1,1)],
+            [cleanString substringWithRange:NSMakeRange(2,1)],
+            [cleanString substringWithRange:NSMakeRange(2,1)]];
+    }
+    if (cleanString.length != 6) {
+        return [UIColor blackColor];
+    }
+
+    unsigned int rgbValue = 0;
+    [[NSScanner scannerWithString:cleanString] scanHexInt:&rgbValue];
+
+    return [UIColor colorWithRed:((rgbValue >> 16) & 0xFF) / 255.0
+                           green:((rgbValue >> 8) & 0xFF) / 255.0
+                            blue:(rgbValue & 0xFF) / 255.0
+                           alpha:1.0];
 }
 
 - (TOCropViewControllerAspectRatioPreset)parseAspectRatioPresetFromDict:(NSDictionary*)dict {

@@ -350,6 +350,14 @@ class IOSUiSettings extends PlatformUiSettings {
   /// Setting this will override the Default which is a localized string for "Cancel".
   final String? cancelButtonTitle;
 
+  /// Color for the 'Done' button.
+  /// Setting this will override the Default which is a color for "Done".
+  final Color? doneButtonColor;
+
+  /// Color for the 'Cancel' button.
+  /// Setting this will override the Default which is a color for "Cancel".
+  final Color? cancelButtonColor;
+
   /// controls the style of crop bounds, it can be rectangle or
   /// circle style (default is [CropStyle.rectangle]).
   final CropStyle cropStyle;
@@ -377,6 +385,8 @@ class IOSUiSettings extends PlatformUiSettings {
     this.title,
     this.doneButtonTitle,
     this.cancelButtonTitle,
+    this.doneButtonColor,
+    this.cancelButtonColor,
     this.cropStyle = CropStyle.rectangle,
     this.aspectRatioPresets = const [
       CropAspectRatioPreset.original,
@@ -411,6 +421,8 @@ class IOSUiSettings extends PlatformUiSettings {
         'ios.title': this.title,
         'ios.done_button_title': this.doneButtonTitle,
         'ios.cancel_button_title': this.cancelButtonTitle,
+        'ios.done_button_color': _colorToHexString(this.doneButtonColor),
+        'ios.cancel_button_color': _colorToHexString(this.cancelButtonColor),
         'ios.crop_style': this.cropStyle.name,
         'ios.aspect_ratio_presets': aspectRatioPresets
             .map<Map<String, dynamic>>((item) => {
@@ -423,6 +435,14 @@ class IOSUiSettings extends PlatformUiSettings {
                 })
             .toList(),
       };
+
+  String _colorToHexString(Color color) {
+    return '#'
+            '${color.red.toRadixString(16).padLeft(2, '0')}'
+            '${color.green.toRadixString(16).padLeft(2, '0')}'
+            '${color.blue.toRadixString(16).padLeft(2, '0')}'
+        .toUpperCase();
+  }
 }
 
 typedef WebDialogBuilder = Widget Function(
