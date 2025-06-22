@@ -436,7 +436,8 @@ class IOSUiSettings extends PlatformUiSettings {
             .toList(),
       };
 
-  String _colorToHexString(Color color) {
+  String? _colorToHexString(Color? color) {
+    if (color == null) return null;
     return '#'
             '${color.red.toRadixString(16).padLeft(2, '0')}'
             '${color.green.toRadixString(16).padLeft(2, '0')}'
